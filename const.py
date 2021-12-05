@@ -1,0 +1,43 @@
+import sys
+import os
+
+from utils import *
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+HARDHAT_SERVER_OPTION = 1
+GANACHE_SERVER_OPTION = 2
+RINKEBY_SERVER_OPTION = 3
+
+# config the server mode
+SERVER_MODE = RINKEBY_SERVER_OPTION
+
+CONTRACTS_DIR = "contracts/"
+SOL_FILENAME = sys.argv[1] + ".sol"
+CONTRACT_NAME = sys.argv[1]
+logger.info("Deploying... {} contract from the file {}".format(CONTRACT_NAME, SOL_FILENAME))
+
+SOL_VERSION = get_sol_version(CONTRACTS_DIR + SOL_FILENAME)
+logger.info("Loaded version is: {}".format(SOL_VERSION))
+
+ABI_FILE = "abi.json"
+BYTECODE_FILE = "bytecode.json"
+SAMPLE_WEB3_FILE = "sample-web3.js"
+
+HARDHAT_ACCOUNT_PUBLIC_KEY = os.getenv("HARDHAT_ACCOUNT_PUBLIC_KEY")
+HARDHAT_ACCOUNT_PRIVATE_KEY = os.getenv("HARDHAT_ACCOUNT_PRIVATE_KEY")
+HARDHAT_RPC_SERVER = os.getenv("HARDHAT_RPC_SERVER")
+HARDHAT_CHAIN_ID = os.getenv("HARDHAT_CHAIN_ID")
+
+GANACHE_RPC_SERVER = os.getenv("GANACHE_RPC_SERVER")
+GANACHE_ACCOUNT_PUBLIC_KEY = os.getenv("GANACHE_ACCOUNT_PUBLIC_KEY")
+GANACHE_ACCOUNT_PRIVATE_KEY = os.getenv("GANACHE_ACCOUNT_PRIVATE_KEY")
+GANACHE_CHAIN_ID = os.getenv("GANACHE_CHAIN_ID")
+
+RINKEBY_ACCOUNT_PUBLIC_KEY = os.getenv("RINKEBY_ACCOUNT_PUBLIC_KEY")
+RINKEBY_ACCOUNT_PRIVATE_KEY = os.getenv("RINKEBY_ACCOUNT_PRIVATE_KEY")
+
+RINKEBY_INFURA_RPC_SERVER = os.getenv("RINKEBY_INFURA_RPC_SERVER")
