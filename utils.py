@@ -2,6 +2,9 @@ import logging
 import sys
 import re
 
+from const import *
+
+
 LOG_FILE_NAME = 'app.log'
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -24,3 +27,16 @@ def get_sol_version(sol_filename):
                 return None
             return versions[-1]
     return None
+
+
+def load_sol_content():
+    with open("{}{}".format(CONTRACTS_DIR, SOL_FILENAME), "r") as file:
+        pre_sol_content = file.readlines()
+        sol_content = ""
+        for line in pre_sol_content:
+            if line.strip().startswith("console.log"):
+                continue
+            if 'import "hardhat/console.sol";' in line:
+                continue
+            sol_content += line + "\n"
+    return sol_content

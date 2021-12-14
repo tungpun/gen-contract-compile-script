@@ -8,13 +8,18 @@ from const import *
 from dotenv import load_dotenv
 
 if __name__ == '__main__':
-    solcx.install_solc(SOL_VERSION)
+
+    sol_version = get_sol_version(CONTRACTS_DIR + SOL_FILENAME)
+    solcx.install_solc(sol_version)
 
     with open(ABI_FILE, "w") as abi_file:
         abi_file.write("") # empty the file
 
-    with open("{}{}".format(CONTRACTS_DIR, SOL_FILENAME), "r") as file:
-        sol_content = file.read()
+    logger.info("Deploying... {} contract from the file {}".format(CONTRACT_NAME, SOL_FILENAME))
+
+    logger.info("Loaded version is: {}".format(sol_version))
+
+    sol_content = load_sol_content()
 
     compiled_sol = solcx.compile_standard(
         {
@@ -30,7 +35,7 @@ if __name__ == '__main__':
                 }
             }
         },
-        solc_version=SOL_VERSION
+        solc_version=sol_version
     )
 
     with open("compiled_code.json", "w") as compiled_file:
@@ -66,7 +71,40 @@ if __name__ == '__main__':
         my_address = w3.toChecksumAddress(RINKEBY_ACCOUNT_PUBLIC_KEY)
         private_key = RINKEBY_ACCOUNT_PRIVATE_KEY
         chain_id = 4
- 
+
+    # ---
+    # Compile the contract
+
+    with open(ABI_FILE, "w") as abi_file:
+        json.dump(abi, abi_file)
+
+    with open(BYTECODE_FILE, "w") as bc_file:
+        json.dump(bytecode, bc_file)
+
+    with open(SAMPLE_WEB3_FILE, "w") as f:
+        f.write(
+            """
+abi={abi};
+bytecode="{bytecode}";
+    
+{contract_name}Contract = await new web3.eth.Contract(abi)
+.deploy({{ 
+    data: bytecode, 
+    arguments: [] // Writing you constructor's arguments in the array
+}})
+.send({{ from: web3.currentProvider.selectedAddress }});
+            """.format(
+                abi=json.dumps(abi),
+                bytecode=bytecode,
+                contract_name=CONTRACT_NAME
+            )
+        )
+
+    logger.info("Compilied the contract already!")
+    logger.info("abi file:\t\t{}".format(ABI_FILE))
+    logger.info("bytecode file:\t\t{}".format(BYTECODE_FILE))
+    logger.info("sample web3 file:\t{}".format(SAMPLE_WEB3_FILE))
+
     # ---
     # Deploy a contract
  

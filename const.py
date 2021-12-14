@@ -1,11 +1,19 @@
 import sys
 import os
 
-from utils import *
-
 from dotenv import load_dotenv
+from optparse import OptionParser
 
 load_dotenv()
+
+parser = OptionParser()
+
+parser.add_option("-n", "--contract-name", dest="contract_name", help="contract name")
+parser.add_option("-s", "--sol-file-contract", dest="contract_sol_file", help="contract file")
+parser.add_option("-d", "--contract-dir", dest="contract_dir", help="directory contains sol contract files", default="contracts/")
+
+(options, args) = parser.parse_args()
+
 
 
 HARDHAT_SERVER_OPTION = 1
@@ -15,13 +23,9 @@ RINKEBY_SERVER_OPTION = 3
 # config the server mode
 SERVER_MODE = RINKEBY_SERVER_OPTION
 
-CONTRACTS_DIR = "contracts/"
-SOL_FILENAME = sys.argv[1] + ".sol"
-CONTRACT_NAME = sys.argv[1]
-logger.info("Deploying... {} contract from the file {}".format(CONTRACT_NAME, SOL_FILENAME))
-
-SOL_VERSION = get_sol_version(CONTRACTS_DIR + SOL_FILENAME)
-logger.info("Loaded version is: {}".format(SOL_VERSION))
+CONTRACTS_DIR = options.contract_dir
+SOL_FILENAME = options.contract_sol_file
+CONTRACT_NAME = options.contract_name
 
 ABI_FILE = "abi.json"
 BYTECODE_FILE = "bytecode.json"
