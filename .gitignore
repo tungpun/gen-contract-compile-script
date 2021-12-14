@@ -13,3 +13,6 @@ compiled_code.json
 sample-web3.js
 app.log
 contracts/*
+output/*
+__pycache__/*
+*.pyc

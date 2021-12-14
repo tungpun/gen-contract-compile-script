@@ -27,9 +27,9 @@ CONTRACTS_DIR = options.contract_dir
 SOL_FILENAME = options.contract_sol_file
 CONTRACT_NAME = options.contract_name
 
-ABI_FILE = "abi.json"
-BYTECODE_FILE = "bytecode.json"
-SAMPLE_WEB3_FILE = "sample-web3.js"
+ABI_FILE = "output/abi.json"
+BYTECODE_FILE = "output/bytecode.json"
+SAMPLE_WEB3_FILE = "output/sample-web3.js"
 
 HARDHAT_ACCOUNT_PUBLIC_KEY = os.getenv("HARDHAT_ACCOUNT_PUBLIC_KEY")
 HARDHAT_ACCOUNT_PRIVATE_KEY = os.getenv("HARDHAT_ACCOUNT_PRIVATE_KEY")
